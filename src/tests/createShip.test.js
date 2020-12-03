@@ -7,26 +7,34 @@ describe("Testing ship functions", () => {
     expect(testShip.shipLength).toBe(3);
   });
 
+  test("Ship should show not sunk before being hit", () =>{
+    expect(testShip.isSunk()).toBe(false);
+  })
+
   test("Ship will show as all not hit before being hit", () => {
-    expect(testShip.status).toBe([false, false, false])
+    expect(testShip.getStatus()).toStrictEqual([false, false, false])
   });
 
-  test("Ship will mark a position as hit when hit", () => {
+  test("Ship will mark a position as hit when hit once", () => {
     testShip.hit(1);
-    expect(testShip.status).toBe([false, true, false]);
+    expect(testShip.getStatus()).toStrictEqual([false, true, false]);
   });
+
+  test("Ship should show not sunk after being hit", () => {
+    expect(testShip.isSunk()).toBe(false);
+  })
 
   test("Ship will mark a position as hit when hit", () => {
     testShip.hit(0);
-    expect(testShip.status).toBe([true, true, false]);
+    expect(testShip.getStatus()).toStrictEqual([true, true, false]);
   });
 
   test("Ship will mark a position as hit when hit", () => {
     testShip.hit(2);
-    expect(testShip.status).toBe([true, true, true]);
+    expect(testShip.getStatus()).toStrictEqual([true, true, true]);
   });
 
   test("Ship will show as sunk when all sections are hit", () => {
-    expect(testShip.isSunk()).toBeTruthy();
+    expect(testShip.isSunk()).toBe(true);
   })
 });
