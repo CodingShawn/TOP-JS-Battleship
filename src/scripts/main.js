@@ -6,6 +6,12 @@ import pubsub from "./pubsub"
 
 function main() {
   let playerGameboard = gameboard();
+  function placeShip(arrayData) {
+    let [x, y, length, isHorizontal] = arrayData;
+    playerGameboard.placeShip(x, y, length, isHorizontal);
+  };
+  pubsub.subscribe("Create ship", placeShip)
+
   let computerGameboard = gameboard();
 
   let player = createPlayer(computerGameboard, false);
@@ -15,7 +21,6 @@ function main() {
   let playerGameboardView = gameboardView(player);
   let computerGameboardView = gameboardView(computerPlayer);
 
-  playerGameboard.placeShip(0, 0, 5, true);
   computerGameboard.placeShip(0, 0, 5, true);
 
   pubsub.subscribe("playerMadeMove", runRound);
