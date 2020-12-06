@@ -1,4 +1,4 @@
-import gameboard from '../scripts/gameboard'
+import gameboard from '../scripts/createGameboard'
 import createPlayer from '../scripts/createPlayer'
 
 describe("Testing player functions", () =>{

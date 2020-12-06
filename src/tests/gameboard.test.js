@@ -1,4 +1,4 @@
-import gameboard from "../scripts/gameboard";
+import gameboard from "../scripts/createGameboard";
 
 describe("Testing gameboard functions", () => {
   let testBoard = gameboard();
