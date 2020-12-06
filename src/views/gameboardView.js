@@ -1,4 +1,4 @@
-import pubsub from "../scripts/pubsub"
+import pubsub from "../scripts/pubsub";
 
 function gameboardView(player) {
   let container = document.getElementById("container");
@@ -22,18 +22,18 @@ function gameboardView(player) {
       board.appendChild(gameCell);
       rowArray.push(gameCell);
       if (!player.isComputer) {
-        gameCell.addEventListener("click", (event) => {
-          listenForClicks(event, x, y);
-        }, {once: true});
+        
+        gameCell.addEventListener(
+          "click",
+          function listenForClicks() {
+            player.playerMakeMove(x, y);
+            pubsub.publish("playerMadeMove");
+          },
+          { once: true }
+        );
       }
     }
     boardArray.push(rowArray);
-  }
-
-  function listenForClicks(event, x, y) {
-    player.playerMakeMove(x, y);
-    console.log(event.target)
-    pubsub.publish("playerMadeMove")
   }
 
   pubsub.subscribe(player.playerName + "Attacked", updateGameboardView);
@@ -49,7 +49,6 @@ function gameboardView(player) {
     }
   }
 
-  pubsub.subscribe()
 
   let gridTitle = document.createElement("div");
   boardContainer.appendChild(gridTitle);
@@ -58,6 +57,14 @@ function gameboardView(player) {
   } else {
     gridTitle.textContent = "Player's Grid";
   }
+
+  function freezeBoard() {
+    let cover = document.createElement("div")
+    cover.classList.add('cover');
+    container.appendChild(cover)
+  }
+  
+  pubsub.subscribe(player.playerName + 'Won', freezeBoard);
 
   return { updateGameboardView };
 }
