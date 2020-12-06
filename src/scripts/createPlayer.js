@@ -1,6 +1,11 @@
+import pubsub from "./pubsub";
+
 function createPlayer(opponentGameboard, isComputer) {
+  const playerName = isComputer ? "Computer" : "Player";
+
   function attack(x, y) {
     opponentGameboard.receiveAttack(x, y);
+    pubsub.publish(playerName + "Attacked", [x, y])
   }
 
   function isMoveLegal(x, y) {
@@ -12,9 +17,7 @@ function createPlayer(opponentGameboard, isComputer) {
   }
 
   function playerMakeMove(x, y) {
-    if (isMoveLegal(x, y)) {
-      attack(x, y);
-    }
+    attack(x, y);
   }
 
   function computerMakeMove() {
@@ -25,7 +28,7 @@ function createPlayer(opponentGameboard, isComputer) {
     attack(x, y);
   }
 
-  return { playerMakeMove, computerMakeMove, isComputer };
+  return { playerMakeMove, computerMakeMove, isComputer, opponentGameboard, playerName };
 }
 
 export default createPlayer;
