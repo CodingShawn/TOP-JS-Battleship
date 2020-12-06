@@ -1,4 +1,6 @@
 import pubsub from "../scripts/pubsub";
+import placeShipsView from "./placeShipsView"
+import {allowDrop, drop} from '../scripts/dragUtil'
 
 function gameboardView(player) {
   let container = document.getElementById("container");
@@ -19,6 +21,10 @@ function gameboardView(player) {
     for (let x = 0; x < 10; x++) {
       let gameCell = document.createElement("div");
       gameCell.classList.add("game-cell");
+      gameCell.addEventListener("dragover", allowDrop);
+      gameCell.addEventListener("drop", drop);
+      gameCell.setAttribute("data-x", `${x}`);
+      gameCell.setAttribute("data-y", `${y}`);
       board.appendChild(gameCell);
       rowArray.push(gameCell);
       if (!player.isComputer) {
@@ -34,6 +40,25 @@ function gameboardView(player) {
       }
     }
     boardArray.push(rowArray);
+  }
+
+  if (player.isComputer) {
+    //Means gameboard is for player
+    boardContainer.append(placeShipsView.placeShipsContainer);
+    pubsub.subscribe("Create ship", markShipLocation)
+  }
+
+  function markShipLocation(arrayData) {
+    let [x, y, length, isHorizontal] = arrayData;
+    if (isHorizontal) {
+      for (let i = x; i < x + length; i++) {
+        boardArray[y][i].classList.add('ship')
+      }
+    } else {
+      for (let i = y; i < y + length; i++) {
+        boardArray[i][x].classList.add('ship');
+      }
+    }
   }
 
   pubsub.subscribe(player.playerName + "Attacked", updateGameboardView);
