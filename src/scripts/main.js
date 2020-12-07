@@ -3,6 +3,7 @@ import gameboard from "./createGameboard";
 import gameboardView from "../views/gameboardView";
 import mainView from "../views/mainView";
 import pubsub from "./pubsub"
+import createComputer from "./createComputer"
 
 function main() {
   let playerGameboard = gameboard();
@@ -15,7 +16,7 @@ function main() {
   let computerGameboard = gameboard();
 
   let player = createPlayer(computerGameboard, false);
-  let computerPlayer = createPlayer(playerGameboard, true);
+  let computerPlayer = createComputer(playerGameboard, true);
 
   let view = mainView();
   let playerGameboardView = gameboardView(player);
