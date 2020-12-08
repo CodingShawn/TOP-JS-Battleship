@@ -27,12 +27,12 @@ function gameboardView(player) {
       gameCell.setAttribute("data-y", `${y}`);
       board.appendChild(gameCell);
       rowArray.push(gameCell);
-      if (!player.isComputer) {
+      if (player.playerName == "Player") {
         
         gameCell.addEventListener(
           "click",
           function listenForClicks() {
-            player.playerMakeMove(x, y);
+            player.attack(x, y);
             pubsub.publish("playerMadeMove");
           },
           { once: true }
@@ -42,21 +42,22 @@ function gameboardView(player) {
     boardArray.push(rowArray);
   }
 
-  if (player.isComputer) {
+  if (player.playerName == "Computer") {
     //Means gameboard is for player
     boardContainer.append(placeShipsView.placeShipsContainer);
-    pubsub.subscribe("Create ship", markShipLocation)
+    pubsub.subscribe("Mark ship location", markShipLocation)
   }
 
   function markShipLocation(arrayData) {
     let [x, y, length, isHorizontal] = arrayData;
+    let shipClass = "ship" + length;
     if (isHorizontal) {
       for (let i = x; i < x + length; i++) {
-        boardArray[y][i].classList.add('ship')
+        boardArray[y][i].classList.add(shipClass)
       }
     } else {
       for (let i = y; i < y + length; i++) {
-        boardArray[i][x].classList.add('ship');
+        boardArray[i][x].classList.add(shipClass);
       }
     }
   }
@@ -77,7 +78,7 @@ function gameboardView(player) {
 
   let gridTitle = document.createElement("div");
   boardContainer.appendChild(gridTitle);
-  if (!player.isComputer) {
+  if (player.playerName == "Player") {
     gridTitle.textContent = "Computer's Grid";
   } else {
     gridTitle.textContent = "Player's Grid";

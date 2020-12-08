@@ -7,11 +7,11 @@ import createComputer from "./createComputer"
 
 function main() {
   let playerGameboard = gameboard();
-  function placeShip(arrayData) {
-    let [x, y, length, isHorizontal] = arrayData;
-    playerGameboard.placeShip(x, y, length, isHorizontal);
+  function placePlayerShip(placeShipData) {
+    let [x, y, shipLength, isHorizontal] = placeShipData;
+    playerGameboard.placeShip(x, y, shipLength, isHorizontal);
   };
-  pubsub.subscribe("Create ship", placeShip)
+  pubsub.subscribe("Create ship", placePlayerShip)
 
   let computerGameboard = gameboard();
 

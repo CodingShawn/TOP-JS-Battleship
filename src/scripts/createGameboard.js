@@ -1,4 +1,5 @@
 import createShip from './createShip2'
+import pubsub from './pubsub';
 
 function gameboard() {
   const layout = [...new Array(10)].map(() => {
@@ -8,24 +9,43 @@ function gameboard() {
   const ships = []
 
   function placeShip(x, y, shipLength, isHorizontal) {
-    let newShip = createShip(shipLength);
-    ships.push(newShip)
+    if (isPlacingShipLegal(x, y, shipLength, isHorizontal)) {
+      let newShip = createShip(shipLength);
+      ships.push(newShip)
 
-    if (isHorizontal === true) {
-      //Place ship horizontally
-      for (let i = 0; i < shipLength; i++) {
-        layout[x + i][y] = newShip;
+      if (isHorizontal === true) {
+        //Place ship horizontally
+        for (let i = 0; i < shipLength; i++) {
+          layout[x + i][y] = newShip;
+        }
+      } else {
+        //Place ship vertically
+        for (let i = 0; i < shipLength; i++) {
+          layout[x][y + i] = newShip;
+        }
       }
-    } else {
-      //Place ship vertically
-      for (let i = 0; i < shipLength; i++) {
-        layout[x][y + i] = newShip;
-      }
+      console.table(layout)
+      let placeShipData = [x, y, shipLength, isHorizontal];
+      pubsub.publish("Mark ship location", placeShipData)
     }
   }
 
+  function isPlacingShipLegal(x, y, shipLength, isHorizontal) {
+    let isLegal = true;
+    if (isHorizontal === true ) {
+      for (let i = 0; i < shipLength; i++) {
+        isLegal = isLegal && layout[x + i][y] === null;
+      } 
+    } else {
+      for (let i = 0; i < shipLength; i++) {
+        isLegal = isLegal && layout[x][y + i] ===null;
+      }
+    }
+    console.log(isLegal)
+    return isLegal;
+  }
+
   function receiveAttack(x, y) {
-    console.log(x)
     if (layout[x][y]) {
       //Truthy means ship present
       layout[x][y].hit();

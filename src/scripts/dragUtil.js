@@ -6,25 +6,32 @@ function allowDrop(event) {
 
 function drop(event) {
   event.preventDefault();
-  var data = event.dataTransfer.getData("text");
-  event.target.classList.add(data);
-  {
+  { 
+    var isHorizontal;
+    event.dataTransfer.getData('isHorizontal') == 'true' ? isHorizontal = true : isHorizontal = false ;
     let dragPos = parseInt(event.dataTransfer.getData("pos"));
-    console.log(dragPos)
-    let x = parseInt(event.target.getAttribute("data-x"));
-    let y = parseInt(event.target.getAttribute("data-y")) - dragPos;
     let length = parseInt(event.dataTransfer.getData("length"));
-    let horizontal = false;
-    pubsub.publish('Create ship', [x, y, length, horizontal]);
+    if (isHorizontal) {
+      var x = parseInt(event.target.getAttribute("data-x")) - dragPos;
+      var y = parseInt(event.target.getAttribute("data-y")); 
+      if ( x >= 0 && x < 10 && x + length <= 10 && y >= 0 && y <10) {
+        pubsub.publish('Create ship', [x, y, length, isHorizontal]);
+      }
+    } else {
+      var x = parseInt(event.target.getAttribute("data-x"));
+      var y = parseInt(event.target.getAttribute("data-y")) - dragPos;
+      if (x >= 0 && x < 10 && y>= 0 && y < 10 && y + length <= 10) {
+        pubsub.publish('Create ship', [x, y, length, isHorizontal]);
+      } 
+    }
 
   }
 }
 
 function drag(event) {
-  event.dataTransfer.setData("text", event.target.classList);
   event.dataTransfer.setData("length", event.target.getAttribute("data-length"));
   event.dataTransfer.setData("pos", event.target.getAttribute("data-pos"));
-  console.log(event.target.getAttribute("data-length"))
+  event.dataTransfer.setData("isHorizontal", event.target.getAttribute("data-isHorizontal"))
 }
 
 export {allowDrop, drop, drag}
