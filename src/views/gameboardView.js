@@ -1,6 +1,6 @@
 import pubsub from "../scripts/pubsub";
-import placeShipsView from "./placeShipsView"
-import {allowDrop, drop} from '../scripts/dragUtil'
+import placeShipsView from "./placeShipsView";
+import { allowDrop, drop } from "../scripts/dragUtil";
 
 function gameboardView(player) {
   let container = document.getElementById("container");
@@ -13,9 +13,25 @@ function gameboardView(player) {
   container.appendChild(boardContainer);
   boardContainer.appendChild(board);
 
-  let boardArray = [];
-  let opponentGameboard = player.opponentGameboard;
+  let boardArray = createGameCells(board, player);
 
+  allowPlayerToPlaceShips(player, boardContainer, boardArray);
+
+  allowUpdatingOfGameboardView(player, boardArray);
+
+  let gridTitle = document.createElement("div");
+  boardContainer.appendChild(gridTitle);
+  if (player.playerName == "Player") {
+    gridTitle.textContent = "Computer's Grid";
+  } else {
+    gridTitle.textContent = "Player's Grid";
+  }
+
+  allowFreezeBoardAtGameEnd(player, container)
+}
+
+function createGameCells(board, player) {
+  let boardArray = [];
   for (let y = 0; y < 10; y++) {
     let rowArray = [];
     for (let x = 0; x < 10; x++) {
@@ -28,7 +44,6 @@ function gameboardView(player) {
       board.appendChild(gameCell);
       rowArray.push(gameCell);
       if (player.playerName == "Player") {
-        
         gameCell.addEventListener(
           "click",
           function listenForClicks() {
@@ -41,11 +56,14 @@ function gameboardView(player) {
     }
     boardArray.push(rowArray);
   }
+  return boardArray;
+}
 
+function allowPlayerToPlaceShips(player, boardContainer, boardArray) {
   if (player.playerName == "Computer") {
     //Means gameboard is for player
     boardContainer.append(placeShipsView.placeShipsContainer);
-    pubsub.subscribe("Mark ship location", markShipLocation)
+    pubsub.subscribe("Mark ship location", markShipLocation);
   }
 
   function markShipLocation(arrayData) {
@@ -53,7 +71,7 @@ function gameboardView(player) {
     let shipClass = "ship" + length;
     if (isHorizontal) {
       for (let i = x; i < x + length; i++) {
-        boardArray[y][i].classList.add(shipClass)
+        boardArray[y][i].classList.add(shipClass);
       }
     } else {
       for (let i = y; i < y + length; i++) {
@@ -61,7 +79,10 @@ function gameboardView(player) {
       }
     }
   }
+}
 
+function allowUpdatingOfGameboardView(player, boardArray) {
+  let opponentGameboard = player.opponentGameboard;
   pubsub.subscribe(player.playerName + "Attacked", updateGameboardView);
 
   function updateGameboardView(coords) {
@@ -74,25 +95,16 @@ function gameboardView(player) {
       boardArray[y][x].classList.add("miss");
     }
   }
+}
 
-
-  let gridTitle = document.createElement("div");
-  boardContainer.appendChild(gridTitle);
-  if (player.playerName == "Player") {
-    gridTitle.textContent = "Computer's Grid";
-  } else {
-    gridTitle.textContent = "Player's Grid";
-  }
-
+function allowFreezeBoardAtGameEnd(player, container) {
   function freezeBoard() {
-    let cover = document.createElement("div")
-    cover.classList.add('cover');
-    container.appendChild(cover)
+    let cover = document.createElement("div");
+    cover.classList.add("cover");
+    container.appendChild(cover);
   }
-  
-  pubsub.subscribe(player.playerName + 'Won', freezeBoard);
 
-  return { updateGameboardView };
+  pubsub.subscribe(player.playerName + "Won", freezeBoard);
 }
 
 export default gameboardView;
