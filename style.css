@@ -60,7 +60,7 @@ html, body {
 
 .board-container {
     height: 100%;
-    width: 100%;
+    width: 50vw;
     display: grid;
 }
 
@@ -82,13 +82,33 @@ html, body {
     position: absolute;
 }
 
+.place-ships-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .ship {
     display: flex;
     width: fit-content;
+    margin: 10px;
 }
 
-.ship8 {
+.ship5 {
     background-color: blueviolet;
+}
+
+.ship4 {
+    background-color: cadetblue;
+}
+
+.ship3 {
+    background-color: chocolate;
+}
+
+.ship2 {
+    background-color: darkgoldenrod;
 }
 
 .ship-body {
