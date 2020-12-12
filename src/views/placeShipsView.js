@@ -2,9 +2,9 @@ import { drag } from "../scripts/dragUtil";
 import pubsub from "../scripts/pubsub";
 
 let shipsSizeArray = [5, 4, 3, 3, 2];
+let placeShipsContainer = document.createElement("div");
 
-const placeShipsView = (() => {
-  let placeShipsContainer = document.createElement("div");
+const placeShipsView = () => {
   placeShipsContainer.classList.add("place-ships-container");
 
   let placeShipsContainerHeader = document.createElement("h2");
@@ -27,8 +27,8 @@ const placeShipsView = (() => {
     createStartGameButton(buttonContainer);
   });
 
-  return { placeShipsContainer };
-})();
+  return placeShipsContainer;
+};
 
 function createShip(length, index) {
   let ship = document.createElement("div");
@@ -82,11 +82,19 @@ function createResetPlacementButton(buttonContainer) {
   let resetPlacementButton = document.createElement("button");
   resetPlacementButton.id = "reset-placement-button";
   resetPlacementButton.textContent = "Reset Ships Placement";
-  resetPlacementButton.addEventListener("click", function resetShipsPlacement() {
-    pubsub.publish("ResetShipsPlacement");
-  });
+  resetPlacementButton.addEventListener(
+    "click",
+    resetPlaceShipsView
+  );
 
   buttonContainer.appendChild(resetPlacementButton);
+}
+
+function resetPlaceShipsView() {
+  while (placeShipsContainer.firstChild) {
+    placeShipsContainer.firstChild.remove();
+  }
+  placeShipsView();
 }
 
 export default placeShipsView;

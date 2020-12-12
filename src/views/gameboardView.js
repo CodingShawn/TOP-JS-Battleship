@@ -63,7 +63,7 @@ function createGameCells(board, player) {
 function allowPlayerToPlaceShips(player, boardContainer, boardArray) {
   if (player.playerName == "Computer") {
     //Means gameboard is for player
-    boardContainer.append(placeShipsView.placeShipsContainer);
+    boardContainer.append(placeShipsView());
     pubsub.subscribe("Mark ship location", markShipLocation);
   }
 
