@@ -29,6 +29,9 @@ function gameboard() {
         //Only run this if ships placed by dragging
         pubsub.publish("Mark ship location", placeShipData);
         pubsub.publish("RemoveShipFromOptions", shipID);
+        if (ships.length == 5) {
+          pubsub.publish("AllShipsPlaced");
+        }
       }
       return true;
     } else {

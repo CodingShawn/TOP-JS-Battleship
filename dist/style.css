@@ -49,26 +49,42 @@ table {
 
 /* Own styling starts here */
 
+* {
+    box-sizing: border-box;
+}
+
 html, body {
     height: 100vh;
+    margin: 10px;
 }
 
 #container {
     display: flex;
-    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+#container h1 {
+    font-size: 50px;
+    font-weight: bold;
+    padding: 10px;
 }
 
 .board-container {
-    height: 100%;
-    width: 50vw;
     display: grid;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-gap: 20px;
 }
 
 .board {
-    border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(10, 50px);
     grid-template-rows: repeat(10, 50px);
+    grid-column: 2;
+}
+
+.computer-board {
+    display: none;
 }
 
 .game-cell {
@@ -87,6 +103,13 @@ html, body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
+}
+
+.place-ships-container h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
 }
 
 .ship {
@@ -124,3 +147,4 @@ html, body {
 .miss {
     background-color: red;
 }
+

@@ -7,8 +7,9 @@ const placeShipsView = (() => {
   let placeShipsContainer = document.createElement("div");
   placeShipsContainer.classList.add("place-ships-container");
 
-  let placeShipsContainerHeader = document.createElement("div");
-  placeShipsContainerHeader.textContent = "Place Ships";
+  let placeShipsContainerHeader = document.createElement("h2");
+  placeShipsContainerHeader.textContent =
+    "Drag ships to place on grid. Double click to rotate ships.";
   placeShipsContainer.appendChild(placeShipsContainerHeader);
 
   for (let i = 0; i < shipsSizeArray.length; i++) {
@@ -16,7 +17,15 @@ const placeShipsView = (() => {
     placeShipsContainer.appendChild(ship);
   }
 
+  let buttonContainer = document.createElement("div");
+  placeShipsContainer.appendChild(buttonContainer);
+
+  createResetPlacementButton(buttonContainer);
+
   pubsub.subscribe("RemoveShipFromOptions", removeShipFromHoldingArea);
+  pubsub.subscribe("AllShipsPlaced", () => {
+    createStartGameButton(buttonContainer);
+  });
 
   return { placeShipsContainer };
 })();
@@ -56,6 +65,28 @@ function createShip(length, index) {
 function removeShipFromHoldingArea(shipID) {
   let ship = document.getElementById(shipID);
   ship.style.display = "none";
+}
+
+function createStartGameButton(buttonContainer) {
+  let startGameButton = document.createElement("button");
+  startGameButton.id = "start-game-button";
+  startGameButton.textContent = "Start Game";
+  startGameButton.addEventListener("click", function startGameCue() {
+    pubsub.publish("StartGame");
+  });
+
+  buttonContainer.appendChild(startGameButton);
+}
+
+function createResetPlacementButton(buttonContainer) {
+  let resetPlacementButton = document.createElement("button");
+  resetPlacementButton.id = "reset-placement-button";
+  resetPlacementButton.textContent = "Reset Ships Placement";
+  resetPlacementButton.addEventListener("click", function resetShipsPlacement() {
+    pubsub.publish("ResetShipsPlacement");
+  });
+
+  buttonContainer.appendChild(resetPlacementButton);
 }
 
 export default placeShipsView;

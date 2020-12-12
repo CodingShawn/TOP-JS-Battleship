@@ -23,6 +23,7 @@ function gameboardView(player) {
   boardContainer.appendChild(gridTitle);
   if (player.playerName == "Player") {
     gridTitle.textContent = "Computer's Grid";
+    boardContainer.classList.add("computer-board");
   } else {
     gridTitle.textContent = "Player's Grid";
   }
