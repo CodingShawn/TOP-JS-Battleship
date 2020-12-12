@@ -24,7 +24,6 @@ function gameboard() {
           layout[x][y + i] = newShip;
         }
       }
-      console.table(layout);
       let placeShipData = [x, y, shipLength, isHorizontal];
       if (shipID) {
         //Only run this if ships placed by dragging
@@ -37,19 +36,29 @@ function gameboard() {
     }
   }
 
+  function subscribeToShipPlacement() {
+    pubsub.subscribe(
+      "Create ship",
+      function placeShipByDropping(placeShipData) {
+        let [x, y, shipLength, isHorizontal, shipID] = placeShipData;
+        placeShip(x, y, shipLength, isHorizontal, shipID);
+      }
+    );
+  }
+
   function isPlacingShipLegal(x, y, shipLength, isHorizontal) {
     let isLegal = true;
     if (isHorizontal === true) {
       for (let i = 0; i < shipLength; i++) {
         if (x + i > 9) {
-          return isLegal = false
+          return (isLegal = false);
         }
         isLegal = isLegal && layout[x + i][y] === null;
       }
     } else {
       for (let i = 0; i < shipLength; i++) {
         if (i + i > 9) {
-          return isLegal= false
+          return (isLegal = false);
         }
         isLegal = isLegal && layout[x][y + i] === null;
       }
@@ -84,16 +93,22 @@ function gameboard() {
         var x = Math.floor(Math.random() * 10);
         var y = Math.floor(Math.random() * 10);
         if (Math.floor(Math.random() * 2)) {
-          var isHorizontal = true
+          var isHorizontal = true;
         } else {
           var isHorizontal = false;
         }
-        console.log(`x: ${x} y ${y} shiplength ${shipsLength}, ishorizontal: ${isHorizontal}`)
       } while (!placeShip(x, y, shipsLength, isHorizontal));
     }
-  }  
+  }
 
-  return { placeShip, checkLocation, receiveAttack, allSunk, autoPlaceShip };
+  return {
+    placeShip,
+    checkLocation,
+    receiveAttack,
+    allSunk,
+    autoPlaceShip,
+    subscribeToShipPlacement,
+  };
 }
 
 export default gameboard;

@@ -7,11 +7,7 @@ import createComputer from "./createComputer";
 
 function main() {
   let playerGameboard = gameboard();
-  function placePlayerShip(placeShipData) {
-    let [x, y, shipLength, isHorizontal, shipID] = placeShipData;
-    playerGameboard.placeShip(x, y, shipLength, isHorizontal, shipID);
-  }
-  pubsub.subscribe("Create ship", placePlayerShip);
+  playerGameboard.subscribeToShipPlacement();
 
   let computerGameboard = gameboard();
 
@@ -22,7 +18,7 @@ function main() {
   let playerGameboardView = gameboardView(player);
   let computerGameboardView = gameboardView(computerPlayer);
 
-  computerGameboard.placeShip(0, 0, 5, true);
+  computerGameboard.autoPlaceShip();
 
   pubsub.subscribe("playerMadeMove", runRound);
 
