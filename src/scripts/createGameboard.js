@@ -31,6 +31,9 @@ function gameboard() {
         pubsub.publish("Mark ship location", placeShipData);
         pubsub.publish("RemoveShipFromOptions", shipID);
       }
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -38,14 +41,19 @@ function gameboard() {
     let isLegal = true;
     if (isHorizontal === true) {
       for (let i = 0; i < shipLength; i++) {
+        if (x + i > 9) {
+          return isLegal = false
+        }
         isLegal = isLegal && layout[x + i][y] === null;
       }
     } else {
       for (let i = 0; i < shipLength; i++) {
+        if (i + i > 9) {
+          return isLegal= false
+        }
         isLegal = isLegal && layout[x][y + i] === null;
       }
     }
-    console.log(isLegal);
     return isLegal;
   }
 
@@ -69,7 +77,23 @@ function gameboard() {
     return layout[x][y];
   }
 
-  return { placeShip, checkLocation, receiveAttack, allSunk };
+  function autoPlaceShip() {
+    let shipsLengthArray = [5, 4, 3, 3, 2];
+    for (let shipsLength of shipsLengthArray) {
+      do {
+        var x = Math.floor(Math.random() * 10);
+        var y = Math.floor(Math.random() * 10);
+        if (Math.floor(Math.random() * 2)) {
+          var isHorizontal = true
+        } else {
+          var isHorizontal = false;
+        }
+        console.log(`x: ${x} y ${y} shiplength ${shipsLength}, ishorizontal: ${isHorizontal}`)
+      } while (!placeShip(x, y, shipsLength, isHorizontal));
+    }
+  }  
+
+  return { placeShip, checkLocation, receiveAttack, allSunk, autoPlaceShip };
 }
 
 export default gameboard;
