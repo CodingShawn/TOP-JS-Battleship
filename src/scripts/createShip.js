@@ -1,20 +1,20 @@
 function createShip(length) {
   let shipLength = length;
-  let status = new Array(length).fill(false);
+  let health = length;
 
-  function getStatus() {
-    return status;
+  function getHealth() {
+    return health;
   }
 
-  function hit(position) {
-      status[position] = true;
+  function hit() {
+      health--;
   }
 
   function isSunk() {
-      return status.every((position)=> { return position} );
+      return health == 0;
   }
 
-  return { shipLength, getStatus, hit, isSunk };
+  return { shipLength, getHealth, hit, isSunk };
 }
 
 export default createShip;
