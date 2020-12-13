@@ -28,12 +28,14 @@ function gameboardView(player) {
   gridTitle.classList.add("grid-title");
   if (player.playerName == "Player") {
     gridTitle.textContent = "Computer's Grid";
+    boardContainer.id = "computer-grid";
     boardContainer.classList.add("hidden");
     pubsub.subscribe("StartGame", function revealComputerBoard() {
       boardContainer.classList.remove("hidden");
     });
   } else {
     gridTitle.textContent = "Player's Grid";
+    boardContainer.id = "player-grid";
   }
 
   allowFreezeBoardAtGameEnd(player, container);
