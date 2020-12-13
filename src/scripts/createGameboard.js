@@ -2,11 +2,9 @@ import createShip from "./createShip2";
 import pubsub from "./pubsub";
 
 function gameboard() {
-  const layout = [...new Array(10)].map(() => {
-    return [...new Array(10)].map(() => null);
-  });
+  let layout = createNewLayout();
 
-  const ships = [];
+  let ships = createNewShipsArray();
 
   function placeShip(x, y, shipLength, isHorizontal, shipID = null) {
     if (isPlacingShipLegal(x, y, shipLength, isHorizontal)) {
@@ -32,7 +30,10 @@ function gameboard() {
         if (ships.length == 5) {
           pubsub.publish("AllShipsPlaced");
         }
+        //Allow board to be reset for players
+        pubsub.subscribe("ResetShips", resetShipsPlacement)
       }
+      console.table(layout)
       return true;
     } else {
       return false;
@@ -47,6 +48,11 @@ function gameboard() {
         placeShip(x, y, shipLength, isHorizontal, shipID);
       }
     );
+  }
+
+  function resetShipsPlacement() {
+    layout = createNewLayout();
+    ships = createNewShipsArray();
   }
 
   function isPlacingShipLegal(x, y, shipLength, isHorizontal) {
@@ -112,6 +118,17 @@ function gameboard() {
     autoPlaceShip,
     subscribeToShipPlacement,
   };
+}
+
+function createNewLayout() {
+  let layout = [...new Array(10)].map(() => {
+    return [...new Array(10)].map(() => null);
+  });
+  return layout;
+}
+
+function createNewShipsArray() {
+  return [];
 }
 
 export default gameboard;
