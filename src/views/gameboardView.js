@@ -55,7 +55,7 @@ function createGameCells(board, player) {
       if (player.playerName == "Player") {
         gameCell.setAttribute("data-listener", "true");
         gameCell.addEventListener(
-          "mouseover",
+          "click",
           function listenForClicks() {
             player.attack(x, y);
             pubsub.publish("playerMadeMove");
@@ -135,11 +135,13 @@ function clearBoardOfShips(boardArray, player) {
           let x = gameCell.getAttribute("data-x");
           let y = gameCell.getAttribute("data-y");
           if (gameCell.getAttribute("data-listener") === "false") {
+            gameCell.setAttribute("data-listener", "true");
             gameCell.addEventListener(
-              "mouseover",
+              "click",
               function listenForClicks() {
                 player.attack(x, y);
                 pubsub.publish("playerMadeMove");
+                gameCell.setAttribute("data-listener", "false");
               },
               { once: true }
             );
