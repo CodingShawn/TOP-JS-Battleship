@@ -25,9 +25,13 @@ function gameboardView(player) {
 
   let gridTitle = document.createElement("div");
   boardContainer.appendChild(gridTitle);
+  gridTitle.classList.add("grid-title");
   if (player.playerName == "Player") {
     gridTitle.textContent = "Computer's Grid";
-    boardContainer.classList.add("computer-board");
+    boardContainer.classList.add("hidden");
+    pubsub.subscribe("StartGame", function revealComputerBoard() {
+      boardContainer.classList.remove("hidden");
+    })
   } else {
     gridTitle.textContent = "Player's Grid";
   }

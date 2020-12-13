@@ -60,31 +60,34 @@ html, body {
 
 #container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
 }
 
-#container h1 {
+body h1 {
     font-size: 50px;
     font-weight: bold;
     padding: 10px;
+    text-align: center;
 }
 
 .board-container {
+    max-width: 1000px;
     display: grid;
-    grid-template-columns: 1fr 500px 1fr;
+    grid-template-columns: 500px 1fr;
     grid-gap: 20px;
+}
+
+.grid-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    grid-column-start: 1;
 }
 
 .board {
     display: grid;
     grid-template-columns: repeat(10, 50px);
     grid-template-rows: repeat(10, 50px);
-    grid-column: 2;
-}
-
-.computer-board {
-    display: none;
 }
 
 .game-cell {
@@ -148,3 +151,6 @@ html, body {
     background-color: red;
 }
 
+.hidden {
+    display: none;
+}

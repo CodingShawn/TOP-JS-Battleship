@@ -3,9 +3,9 @@ function mainView() {
   let body = document.getElementsByTagName("body")[0];
   container.id = "container";
 
-  let containerTitle = document.createElement("h1");
-  containerTitle.textContent = "Battleships";
-  container.appendChild(containerTitle);
+  let pageTitle = document.createElement("h1");
+  pageTitle.textContent = "Battleships";
+  body.appendChild(pageTitle);
 
   body.appendChild(container);
 }

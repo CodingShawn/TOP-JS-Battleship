@@ -73,6 +73,7 @@ function createStartGameButton(buttonContainer) {
   startGameButton.textContent = "Start Game";
   startGameButton.addEventListener("click", function startGameCue() {
     pubsub.publish("StartGame");
+    placeShipsContainer.classList.add('hidden')
   });
 
   buttonContainer.appendChild(startGameButton);
