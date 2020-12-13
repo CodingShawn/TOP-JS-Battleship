@@ -73,7 +73,7 @@ function createStartGameButton(buttonContainer) {
   startGameButton.textContent = "Start Game";
   startGameButton.addEventListener("click", function startGameCue() {
     pubsub.publish("StartGame");
-    placeShipsContainer.classList.add('hidden')
+    placeShipsContainer.classList.add('hidden');
   });
 
   buttonContainer.appendChild(startGameButton);
@@ -88,11 +88,12 @@ function createResetPlacementButton(buttonContainer) {
   buttonContainer.appendChild(resetPlacementButton);
 }
 
-function resetPlaceShipsView() {
+export function resetPlaceShipsView() {
   while (placeShipsContainer.firstChild) {
     placeShipsContainer.firstChild.remove();
   }
   placeShipsView();
+  //Trigger reset of board ships placement as well as board ships view
   pubsub.publish("ResetShips");
 }
 

@@ -18,7 +18,7 @@ function gameboardView(player) {
   allowPlayerToPlaceShips(player, boardContainer, boardArray);
 
   pubsub.subscribe("ResetShips", function initiateClearBoard() {
-    clearBoardOfShips(boardArray);
+    clearBoardOfShips(boardArray, player);
   });
 
   allowUpdatingOfGameboardView(player, boardArray);
@@ -31,7 +31,7 @@ function gameboardView(player) {
     boardContainer.classList.add("hidden");
     pubsub.subscribe("StartGame", function revealComputerBoard() {
       boardContainer.classList.remove("hidden");
-    })
+    });
   } else {
     gridTitle.textContent = "Player's Grid";
   }
@@ -46,21 +46,24 @@ function createGameCells(board, player) {
     for (let x = 0; x < 10; x++) {
       let gameCell = document.createElement("div");
       gameCell.classList.add("game-cell");
-      gameCell.addEventListener("dragover", allowDrop);
-      gameCell.addEventListener("drop", drop);
-      gameCell.setAttribute("data-x", `${x}`);
-      gameCell.setAttribute("data-y", `${y}`);
       board.appendChild(gameCell);
       rowArray.push(gameCell);
+      gameCell.setAttribute("data-x", `${x}`);
+      gameCell.setAttribute("data-y", `${y}`);
       if (player.playerName == "Player") {
+        gameCell.setAttribute("data-listener", "true");
         gameCell.addEventListener(
-          "click",
+          "mouseover",
           function listenForClicks() {
             player.attack(x, y);
             pubsub.publish("playerMadeMove");
+            gameCell.setAttribute("data-listener", "false");
           },
           { once: true }
         );
+      } else if (player.playerName == "Computer") {
+        gameCell.addEventListener("dragover", allowDrop);
+        gameCell.addEventListener("drop", drop);
       }
     }
     boardArray.push(rowArray);
@@ -113,16 +116,32 @@ function allowFreezeBoardAtGameEnd(player, container) {
     container.appendChild(cover);
   }
 
-  pubsub.subscribe(player.playerName + "Won", freezeBoard);
+  pubsub.subscribe("GameEnd", freezeBoard);
 }
 
-function clearBoardOfShips(boardArray) {
+function clearBoardOfShips(boardArray, player) {
   let shipClass = /ship[0-9]/;
   for (let rows of boardArray) {
     for (let gameCell of rows) {
       for (let classType of gameCell.classList) {
+        gameCell.classList.remove("hit");
+        gameCell.classList.remove("miss");
         if (classType.match(shipClass)) {
           gameCell.classList.remove(classType);
+        }
+        if (player.playerName == "Player") {
+          let x = gameCell.getAttribute("data-x");
+          let y = gameCell.getAttribute("data-y");
+          if (gameCell.getAttribute("data-listener") === "false") {
+            gameCell.addEventListener(
+              "mouseover",
+              function listenForClicks() {
+                player.attack(x, y);
+                pubsub.publish("playerMadeMove");
+              },
+              { once: true }
+            );
+          }
         }
       }
     }

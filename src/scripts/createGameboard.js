@@ -6,6 +6,8 @@ function gameboard() {
 
   let ships = createNewShipsArray();
 
+  pubsub.subscribe("StartNewGame", resetShipsPlacement);
+
   function placeShip(x, y, shipLength, isHorizontal, shipID = null) {
     if (isPlacingShipLegal(x, y, shipLength, isHorizontal)) {
       let newShip = createShip(shipLength);
@@ -30,10 +32,7 @@ function gameboard() {
         if (ships.length == 5) {
           pubsub.publish("AllShipsPlaced");
         }
-        //Allow board to be reset for players
-        pubsub.subscribe("ResetShips", resetShipsPlacement)
       }
-      console.table(layout)
       return true;
     } else {
       return false;
@@ -41,6 +40,8 @@ function gameboard() {
   }
 
   function subscribeToShipPlacement() {
+    //Allow board to be reset for players
+    pubsub.subscribe("ResetShips", resetShipsPlacement)
     pubsub.subscribe(
       "Create ship",
       function placeShipByDropping(placeShipData) {
