@@ -31,6 +31,7 @@ function createNewGameButton() {
   newGameButton.classList.add("new-game-button");
   newGameButton.addEventListener("click", function startNewGame() {
     pubsub.publish("StartNewGame");
+    newGameButton.classList.add("hidden");
   });
 
   buttonContainer.appendChild(newGameButton);

@@ -7,9 +7,14 @@ let placeShipsContainer = document.createElement("div");
 const placeShipsView = () => {
   placeShipsContainer.classList.add("place-ships-container");
 
-  let placeShipsContainerHeader = document.createElement("h2");
-  placeShipsContainerHeader.textContent =
-    "Drag ships to place on grid. Double click to rotate ships.";
+  let placeShipsContainerHeader = document.createElement("ul");
+  let headerInstructions1 = document.createElement("li");
+  let headerInstructions2 = document.createElement("li");
+  headerInstructions1.textContent = "Drag ships to place on grid.";
+  headerInstructions2.textContent = "Double click to rotate ships.";
+
+  placeShipsContainerHeader.appendChild(headerInstructions1);
+  placeShipsContainerHeader.appendChild(headerInstructions2);
   placeShipsContainer.appendChild(placeShipsContainerHeader);
 
   for (let i = 0; i < shipsSizeArray.length; i++) {
@@ -18,6 +23,7 @@ const placeShipsView = () => {
   }
 
   let buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("button-container");
   placeShipsContainer.appendChild(buttonContainer);
 
   createResetPlacementButton(buttonContainer);
@@ -73,7 +79,7 @@ function createStartGameButton(buttonContainer) {
   startGameButton.textContent = "Start Game";
   startGameButton.addEventListener("click", function startGameCue() {
     pubsub.publish("StartGame");
-    placeShipsContainer.classList.add('hidden');
+    placeShipsContainer.classList.add("hidden");
   });
 
   buttonContainer.appendChild(startGameButton);

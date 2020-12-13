@@ -56,17 +56,46 @@ table {
 html, body {
     height: 100vh;
     margin: 10px;
+    font-family: 'Gochi Hand', cursive;
 }
 
 #container {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 body h1 {
-    font-size: 50px;
+    font-size: 60px;
     font-weight: bold;
     padding: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+button {
+    border: 1px black dashed;
+    border-radius: 5px;
+    background: #fff;
+    font-size: 28px;
+    margin: 10px;
+    padding: 10px;
+    font-family: 'Gochi Hand', cursive;
+}
+
+button:hover {
+    color: white;
+    background: black;
+    cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.new-game-button {
     text-align: center;
 }
 
@@ -79,7 +108,7 @@ body h1 {
 
 .grid-title {
     text-align: center;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 700;
     grid-column-start: 1;
 }
@@ -97,7 +126,7 @@ body h1 {
 
 .cover {
     height: 100%;
-    width: 100%;
+    width: 100vw;
     position: absolute;
 }
 
@@ -108,10 +137,10 @@ body h1 {
     justify-content: space-around;
 }
 
-.place-ships-container h2 {
+.place-ships-container ul {
     width: 100%;
     text-align: center;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 700;
 }
 
