@@ -82,10 +82,7 @@ function createResetPlacementButton(buttonContainer) {
   let resetPlacementButton = document.createElement("button");
   resetPlacementButton.id = "reset-placement-button";
   resetPlacementButton.textContent = "Reset Ships Placement";
-  resetPlacementButton.addEventListener(
-    "click",
-    resetPlaceShipsView
-  );
+  resetPlacementButton.addEventListener("click", resetPlaceShipsView);
 
   buttonContainer.appendChild(resetPlacementButton);
 }
@@ -95,6 +92,7 @@ function resetPlaceShipsView() {
     placeShipsContainer.firstChild.remove();
   }
   placeShipsView();
+  pubsub.publish("ResetShips");
 }
 
 export default placeShipsView;

@@ -17,6 +17,10 @@ function gameboardView(player) {
 
   allowPlayerToPlaceShips(player, boardContainer, boardArray);
 
+  pubsub.subscribe("ResetShips", function initiateClearBoard() {
+    clearBoardOfShips(boardArray);
+  });
+
   allowUpdatingOfGameboardView(player, boardArray);
 
   let gridTitle = document.createElement("div");
@@ -28,7 +32,7 @@ function gameboardView(player) {
     gridTitle.textContent = "Player's Grid";
   }
 
-  allowFreezeBoardAtGameEnd(player, container)
+  allowFreezeBoardAtGameEnd(player, container);
 }
 
 function createGameCells(board, player) {
@@ -106,6 +110,19 @@ function allowFreezeBoardAtGameEnd(player, container) {
   }
 
   pubsub.subscribe(player.playerName + "Won", freezeBoard);
+}
+
+function clearBoardOfShips(boardArray) {
+  let shipClass = /ship[0-9]/;
+  for (let rows of boardArray) {
+    for (let gameCell of rows) {
+      for (let classType of gameCell.classList) {
+        if (classType.match(shipClass)) {
+          gameCell.classList.remove(classType);
+        }
+      }
+    }
+  }
 }
 
 export default gameboardView;
