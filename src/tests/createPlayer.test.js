@@ -7,7 +7,7 @@ describe("Testing player functions", () =>{
   testBoard.placeShip(0, 0, 3, true);
 
   test("Player is able to attack", () => {
-    player.playerMakeMove(0, 0);
+    player.attack(0, 0);
     expect(testBoard.checkLocation(0, 0)).toBe(true);
   })
 })
