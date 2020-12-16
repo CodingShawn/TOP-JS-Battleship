@@ -144,6 +144,19 @@ button:hover {
     font-weight: 700;
 }
 
+.game-cell {
+    transition: background-color 0.4s;
+}
+
+#computer-grid .game-cell:hover {
+    cursor: pointer;
+    border: solid #666;
+}
+
+#computer-grid .game-cell:active {
+    box-shadow: 0 0 18px #eee inset;
+}
+
 .ship {
     display: flex;
     width: fit-content;
@@ -173,11 +186,11 @@ button:hover {
 }
 
 .hit {
-    background-color: black;
+    background-color: #33333363;
 }
 
 .miss {
-    background-color: red;
+    background-color: #f1c8c8;
 }
 
 .hidden {
