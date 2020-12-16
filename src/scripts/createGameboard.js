@@ -1,4 +1,4 @@
-import createShip from "./createShip2";
+import createShip from "./createShip";
 import pubsub from "./pubsub";
 
 function gameboard() {
